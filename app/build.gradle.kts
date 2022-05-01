@@ -17,12 +17,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        getByName("release") {
-        isMinifyEnabled = false
-        proguardFiles (getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -30,17 +24,35 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile::class).all{
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjvm-default=compatibility")
+        }
     }
 }
 
 val daggerVersion = "2.36"
+val retrofitVersion = "2.9.0"
+val archComponents = "2.5.0-beta01"
 
 dependencies {
 
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01")
+
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
+    implementation("androidx.activity:activity-ktx:1.4.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.6")
 
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("androidx.appcompat:appcompat:1.4.1")
